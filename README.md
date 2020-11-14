@@ -40,3 +40,7 @@ Simulator ROS packages for the Clearpath Husky.
  - husky_gazebo : Gazebo plugin definitions and extensions to the robot URDF.
 
 For Husky instructions and tutorials, please see http://wiki.ros.org/Robots/Husky
+
+Custom Publish  
+==============
+rostopic pub -r 10 /husky_gamma/husky_velocity_controller/cmd_vel geometry_msgs/Twist -- '[2.0,0.0,0.0]' '[0.0,0.0,1]'
