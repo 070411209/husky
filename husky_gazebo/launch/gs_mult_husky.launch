@@ -33,13 +33,7 @@ ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSI
   <!-- We resume the logic in empty_world.launch, changing only the name of the world to be launched -->
   <include file="$(find husky_gazebo)/launch/playpen.launch" />
 
-  <include file="$(find husky_gazebo)/launch/spawn_husky.launch">
-    <arg name="laser_enabled" value="$(arg laser_enabled)"/>
-    <arg name="robot_namespace" value="husky_alpha"/>
-    <arg name="multimaster" value="true"/>
-  </include>
-
-  <include file="$(find husky_gazebo)/launch/spawn_husky.launch">
+  <include file="$(find husky_gazebo)/launch/mult_spawn_husky.launch">
     <arg name="laser_enabled" value="$(arg laser_enabled)"/>
     <arg name="robot_namespace" value="husky_beta"/>
     <arg name="multimaster" value="true"/>
@@ -51,10 +45,16 @@ ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSI
   <include file="$(find husky_gazebo)/launch/spawn_husky.launch">
     <arg name="laser_enabled" value="$(arg laser_enabled)"/>
     <arg name="robot_namespace" value="husky_gamma"/>
-    <arg name="multimaster" value="true"/>
     <arg name="x" value="-3.0"/>
     <arg name="y" value="-1.0"/>
     <arg name="yaw" value="45.0"/>
   </include>
+
+
+  <include file="$(find husky_gazebo)/launch/spawn_husky.launch">
+    <arg name="laser_enabled" value="$(arg laser_enabled)"/>
+    <arg name="robot_namespace" value="husky_alpha"/>
+  </include>
+
 
 </launch>
