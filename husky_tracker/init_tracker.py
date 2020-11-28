@@ -1,0 +1,93 @@
+import rospy
+import cv2
+from sensor_msgs.msg import Image
+from cv_bridge import CvBridge, CvBridgeError
+import numpy as np 
+
+import sys 
+sys.path.append('/home/one/src/GAAS-Object-Tracking/KCF/build/devel/lib/python2.7/dist-packages')
+from ros_kcf.srv import InitRect
+from std_msgs.msg import Int32MultiArray
+import car_config
+
+from items import MessageItem
+import time
+
+class SetInit:
+    def __init__(self, init_rect_img_topic):
+        tracker_types = ['BOOSTING', 'MIL','KCF', 'TLD', 'MEDIANFLOW', 'GOTURN']
+        self.x1 = None
+        self.y1 = None
+        self.x2 = None
+        self.y2 = None
+        self.box = None
+        self.coord = None
+        self.pressed = False
+        self.sub = rospy.Subscriber(init_rect_img_topic, Image, self.callback)
+        self.bridge = CvBridge()
+        # self.frame = None
+        self.isWorking = False
+        self.draw_coord = True;        
+        self.tracker_type = "MEDIANFLOW"
+        self.tracker = cv2.TrackerMedianFlow_create()
+        rospy.spin()
+    
+    def callback(self, data):
+        cv_img = self.bridge.imgmsg_to_cv2(data, "bgr8")
+        cv2.imshow('image', cv_img)
+        if cv2.waitKey(10) & 0xFF == ord('s'):
+            bbox = cv2.selectROI(cv_img, False)
+            self.initWorking(cv_img, bbox)
+        item = self.track(cv_img);
+        cv2.imshow("track",item.getFrame())
+        # k = cv2.waitKey(1) & 0xff           
+
+    def initWorking(self,frame,box):
+        if not self.tracker:
+            raise Exception("dd")
+        status = self.tracker.init(frame,box)
+        if not status:
+            raise Exception("vv")
+        self.coord = box
+        self.isWorking = True
+        print("cur: ", self.coord)
+
+    def track(self,frame):
+        message = None
+        if self.isWorking:
+            status,self.coord = self.tracker.update(frame)
+            if status:
+                message = {"coord":[((int(self.coord[0]), int(self.coord[1])),(int(self.coord[0] + self.coord[2]), int(self.coord[1] + self.coord[3])))]}
+                if self.draw_coord:
+                    p1 = (int(self.coord[0]), int(self.coord[1]))
+                    p2 = (int(self.coord[0] + self.coord[2]), int(self.coord[1] + self.coord[3]))
+                    cv2.rectangle(frame, p1, p2, (255,0,0), 2, 1)
+                    message['msg'] = "is tracking"
+        return MessageItem(frame,message)
+
+    def draw_rect(self,event, x, y, flags, param):
+        if event == cv2.EVENT_LBUTTONDOWN:
+            self.x1 = x
+            self.y1 = y
+            self.x2 = x+1
+            self.y2 = y+1
+            self.pressed = True
+        elif event == cv2.EVENT_LBUTTONUP:
+            self.x2 = x
+            self.y2 = y
+            self.pressed = False
+        elif event == cv2.EVENT_MOUSEMOVE:
+            if self.pressed == True:
+                self.x2 = x 
+                self.y2 = y
+            
+
+
+if __name__=='__main__':
+    rospy.init_node('init_tracker', anonymous=True)
+    
+    init_img_topic = car_config.init_rect_img_topic
+
+    SetInit(init_img_topic)
+
+    print("test")
