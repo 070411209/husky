@@ -38,16 +38,16 @@ ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSI
   <include file="$(find husky_gazebo)/launch/spawn_husky.launch">
     <arg name="laser_enabled" value="$(arg laser_enabled)"/>
     <!-- <arg name="robot_namespace" value="husky_alpha"/> -->
-    <arg name="realsense_enabled" value="$(arg realsense_enabled)"/>
+    <!-- <arg name="realsense_enabled" value="$(arg realsense_enabled)"/> -->
+    <arg name="x" value="4.0"/>
+    <arg name="y" value="0.0"/>
+    <arg name="yaw" value="0.0"/>
   </include>
   
   <include file="$(find husky_gazebo)/launch/spawn_huskys.launch">
     <arg name="laser_enabled" value="$(arg laser_enabled)"/>
     <arg name="robot_namespace" value="husky_beta"/>
     <arg name="realsense_enabled" value="$(arg realsense_enabled)"/>
-    <arg name="x" value="-3.0"/>
-    <arg name="y" value="-1.0"/>
-    <arg name="yaw" value="45.0"/>
   </include>
 
 </launch>
