@@ -15,7 +15,9 @@ import time
 
 class SetInit:
     def __init__(self, init_rect_img_topic):
+        (major_ver, minor_ver, subminor_ver) = (cv2.__version__).split('.')
         tracker_types = ['BOOSTING', 'MIL','KCF', 'TLD', 'MEDIANFLOW', 'GOTURN']
+        self.tracker_type = "MEDIANFLOW"
         self.x1 = None
         self.y1 = None
         self.x2 = None
@@ -27,20 +29,34 @@ class SetInit:
         self.bridge = CvBridge()
         # self.frame = None
         self.isWorking = False
-        self.draw_coord = True;        
-        self.tracker_type = "MEDIANFLOW"
-        self.tracker = cv2.TrackerMedianFlow_create()
+        self.draw_coord = True
+
+        if int(minor_ver) < 3:
+            self.tracker = cv2.Tracker_create(self.tracker_type)
+        else:
+            if self.tracker_type == 'BOOSTING':
+                self.tracker = cv2.TrackerBoosting_create()
+            if self.tracker_type == 'MIL':
+                self.tracker = cv2.TrackerMIL_create()
+            if self.tracker_type == 'KCF':
+                self.tracker = cv2.TrackerKCF_create()
+            if self.tracker_type == 'TLD':
+                self.tracker = cv2.TrackerTLD_create()
+            if self.tracker_type == 'MEDIANFLOW':
+                self.tracker = cv2.TrackerMedianFlow_create()
+            if self.tracker_type == 'GOTURN':
+                self.tracker = cv2.TrackerGOTURN_create()
         rospy.spin()
     
     def callback(self, data):
         cv_img = self.bridge.imgmsg_to_cv2(data, "bgr8")
         cv2.imshow('image', cv_img)
         if cv2.waitKey(10) & 0xFF == ord('s'):
+            print("Tracker Type : ", self.tracker_type)
             bbox = cv2.selectROI(cv_img, False)
             self.initWorking(cv_img, bbox)
         item = self.track(cv_img);
-        cv2.imshow("track",item.getFrame())
-        # k = cv2.waitKey(1) & 0xff           
+        cv2.imshow("track",item.getFrame())          
 
     def initWorking(self,frame,box):
         if not self.tracker:
@@ -64,24 +80,6 @@ class SetInit:
                     cv2.rectangle(frame, p1, p2, (255,0,0), 2, 1)
                     message['msg'] = "is tracking"
         return MessageItem(frame,message)
-
-    def draw_rect(self,event, x, y, flags, param):
-        if event == cv2.EVENT_LBUTTONDOWN:
-            self.x1 = x
-            self.y1 = y
-            self.x2 = x+1
-            self.y2 = y+1
-            self.pressed = True
-        elif event == cv2.EVENT_LBUTTONUP:
-            self.x2 = x
-            self.y2 = y
-            self.pressed = False
-        elif event == cv2.EVENT_MOUSEMOVE:
-            if self.pressed == True:
-                self.x2 = x 
-                self.y2 = y
-            
-
 
 if __name__=='__main__':
     rospy.init_node('init_tracker', anonymous=True)
