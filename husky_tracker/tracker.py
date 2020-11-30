@@ -14,10 +14,6 @@ from items import MessageItem
 import time
 import numpy as np
 import car_config
-import sys 
-sys.path.append('/home/one/src/GAAS-Object-Tracking/KCF/build/devel/lib/python2.7/dist-packages')
-from ros_kcf.srv import InitRect
-from std_msgs.msg import Int32MultiArray
 
 '''
 监视者模块,负责入侵检测,目标跟踪
@@ -136,30 +132,23 @@ class ObjectTracker(object):
             cv2.rectangle(frame,(x,y),(x+w,y+h),(0,0,255),2)
         return frame
 
-def callback(self, data):
-    print("IIIIIII")
-    cv_img = self.bridge.imgmsg_to_cv2(data, "bgr8")
-    cv2.imshow('image', cv_img)
-
 
 if __name__ == '__main__' :
-    rospy.init_node('tracker_car', anonymous=True)
-    init_img_topic = car_config.init_rect_img_topic
-#    tracker_types = ['BOOSTING', 'MIL','KCF', 'TLD', 'MEDIANFLOW', 'GOTURN']
-    # tracker = Tracker(tracker_type="MEDIANFLOW")
-    # video = cv2.VideoCapture(0)
+
+    tracker_types = ['BOOSTING', 'MIL','KCF', 'TLD', 'MEDIANFLOW', 'GOTURN']
+    tracker = Tracker(tracker_type="BOOSTING")
+    video = cv2.VideoCapture(0)
 #    video = cv2.VideoCapture("complex1.mov")
-    sub = rospy.Subscriber("/husky_beta/realsense/color/image_raw", Image, callback)
-    rospy.spin()
-    # ok, frame = video.read()
-    # bbox = cv2.selectROI(frame, False)
-    # tracker.initWorking(frame,bbox)
-    # while True:
-    #     _,frame = video.read();
-    #     if(_):
-    #         item = tracker.track(frame);
-    #         cv2.imshow("track",item.getFrame())
-    #         k = cv2.waitKey(1) & 0xff
-    #         if k == 27:
-    #             break
+
+    ok, frame = video.read()
+    bbox = cv2.selectROI(frame, False)
+    tracker.initWorking(frame,bbox)
+    while True:
+        _,frame = video.read();
+        if(_):
+            item = tracker.track(frame);
+            cv2.imshow("track",item.getFrame())
+            k = cv2.waitKey(1) & 0xff
+            if k == 27:
+                break
  
