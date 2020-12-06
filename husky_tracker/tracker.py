@@ -76,6 +76,7 @@ class Tracker(object):
         self.tracker_type = tracker_type
         self.isWorking = False
         self.draw_coord = draw_coord
+        print("-----------> ", self.tracker_type)
         #构造追踪器
         if int(minor_ver) < 3:
             self.tracker = cv2.Tracker_create(tracker_type)
@@ -136,7 +137,7 @@ class ObjectTracker(object):
 if __name__ == '__main__' :
 
     tracker_types = ['BOOSTING', 'MIL','KCF', 'TLD', 'MEDIANFLOW', 'GOTURN']
-    tracker = Tracker(tracker_type="BOOSTING")
+    tracker = Tracker(tracker_type="MEDIANFLOW")
     video = cv2.VideoCapture(0)
 #    video = cv2.VideoCapture("complex1.mov")
 

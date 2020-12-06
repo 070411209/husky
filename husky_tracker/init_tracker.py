@@ -30,22 +30,6 @@ class SetInit:
         # self.frame = None
         self.isWorking = False
         self.draw_coord = True
-
-        if int(minor_ver) < 3:
-            self.tracker = cv2.Tracker_create(self.tracker_type)
-        else:
-            if self.tracker_type == 'BOOSTING':
-                self.tracker = cv2.TrackerBoosting_create()
-            if self.tracker_type == 'MIL':
-                self.tracker = cv2.TrackerMIL_create()
-            if self.tracker_type == 'KCF':
-                self.tracker = cv2.TrackerKCF_create()
-            if self.tracker_type == 'TLD':
-                self.tracker = cv2.TrackerTLD_create()
-            if self.tracker_type == 'MEDIANFLOW':
-                self.tracker = cv2.TrackerMedianFlow_create()
-            if self.tracker_type == 'GOTURN':
-                self.tracker = cv2.TrackerGOTURN_create()
         rospy.spin()
     
     def callback(self, data):
@@ -55,23 +39,38 @@ class SetInit:
             print("Tracker Type : ", self.tracker_type)
             bbox = cv2.selectROI(cv_img, False)
             self.initWorking(cv_img, bbox)
-        item = self.track(cv_img);
-        cv2.imshow("track",item.getFrame())          
+        item = self.track(cv_img)
+        item.getMessage()
+        cv2.imshow("track", item.getFrame())         
+        
 
     def initWorking(self,frame,box):
+        if self.tracker_type == 'BOOSTING':
+            self.tracker = cv2.TrackerBoosting_create()
+        if self.tracker_type == 'MIL':
+            self.tracker = cv2.TrackerMIL_create()
+        if self.tracker_type == 'KCF':
+            self.tracker = cv2.TrackerKCF_create()
+        if self.tracker_type == 'TLD':
+            self.tracker = cv2.TrackerTLD_create()
+        if self.tracker_type == 'MEDIANFLOW':
+            self.tracker = cv2.TrackerMedianFlow_create()
+        if self.tracker_type == 'GOTURN':
+            self.tracker = cv2.TrackerGOTURN_create()
+
         if not self.tracker:
             raise Exception("dd")
-        status = self.tracker.init(frame,box)
+        status = self.tracker.init(frame, box)
         if not status:
             raise Exception("vv")
         self.coord = box
         self.isWorking = True
-        print("cur: ", self.coord)
+        print("ROI: ", self.coord)
 
     def track(self,frame):
         message = None
         if self.isWorking:
-            status,self.coord = self.tracker.update(frame)
+            status, self.coord = self.tracker.update(frame)
             if status:
                 message = {"coord":[((int(self.coord[0]), int(self.coord[1])),(int(self.coord[0] + self.coord[2]), int(self.coord[1] + self.coord[3])))]}
                 if self.draw_coord:
