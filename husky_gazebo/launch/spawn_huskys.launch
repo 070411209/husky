@@ -36,6 +36,7 @@ ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSI
   <arg name="laser_enabled" default="$(optenv HUSKY_LMS1XX_ENABLED false)"/>
   <arg name="realsense_enabled" default="$(optenv HUSKY_REALSENSE_ENABLED false)"/>
   <arg name="urdf_extras" default="$(optenv HUSKY_URDF_EXTRAS)"/>
+  <arg name="marker_enabled" default="false"/>
 
   <group ns="$(arg robot_namespace)">
     <!-- For single master bringup, run robot control on the gazebo master -->
@@ -46,6 +47,7 @@ ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSI
         <arg name="laser_enabled" value="$(arg laser_enabled)"/>
         <arg name="realsense_enabled" default="$(arg realsense_enabled)"/>
         <arg name="urdf_extras" value="$(arg urdf_extras)"/>
+        <arg name="marker_enabled" value="$(arg marker_enabled)"/>
         <arg name="robot_namespace" value="$(arg robot_namespace)"/>
       </include>
           

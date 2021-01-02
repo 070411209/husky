@@ -29,25 +29,30 @@ ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSI
   <arg name="ur5_enabled" default="false"/>
   <arg name="realsense_enabled" default="true"/>
   <arg name="test_model" default="false"/>
+  <arg name="marker_enabled" default="false"/>
 
   <include file="$(find multimaster_launch)/launch/multimaster_gazebo.launch"/>
 
   <!-- We resume the logic in empty_world.launch, changing only the name of the world to be launched -->
   <include file="$(find husky_gazebo)/launch/playpen.launch" />
-
+  <!--
+    Source
+  -->  
   <include file="$(find husky_gazebo)/launch/spawn_husky.launch">
     <arg name="laser_enabled" value="$(arg laser_enabled)"/>
-    <!-- <arg name="robot_namespace" value="husky_alpha"/> -->
-    <!-- <arg name="realsense_enabled" value="$(arg realsense_enabled)"/> -->
-    <arg name="x" value="4.0"/>
-    <arg name="y" value="0.0"/>
-    <arg name="yaw" value="0.0"/>
+    <arg name="realsense_enabled" value="$(arg realsense_enabled)"/>
   </include>
-  
+  <!--
+    Destination
+  -->    
   <include file="$(find husky_gazebo)/launch/spawn_huskys.launch">
     <arg name="laser_enabled" value="$(arg laser_enabled)"/>
     <arg name="robot_namespace" value="husky_beta"/>
     <arg name="realsense_enabled" value="$(arg realsense_enabled)"/>
+    <arg name="marker_enabled" value="$(arg marker_enabled)"/>
+    <arg name="x" value="4.0"/>
+    <arg name="y" value="0.0"/>
+    <arg name="yaw" value="0.0"/>    
   </include>
 
 </launch>

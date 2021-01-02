@@ -12,6 +12,7 @@
   <arg name="laser_enabled" default="$(optenv HUSKY_LMS1XX_ENABLED false)"/>
   <arg name="realsense_enabled" default="$(optenv HUSKY_REALSENSE_ENABLED false)"/>
   <arg name="urdf_extras" default="$(optenv HUSKY_URDF_EXTRAS)"/>
+  <arg name="marker_enabled" default="false"/>
 
   <include file="$(find multimaster_launch)/launch/multimaster_robot.launch" if="$(arg multimaster)">
     <arg name="gazebo_interface" value="$(find husky_control)/config/gazebo_interface.yaml" />
@@ -25,7 +26,8 @@
     <arg name="laser_enabled" default="$(arg laser_enabled)"/>
     <arg name="realsense_enabled" default="$(arg realsense_enabled)"/>
     <arg name="urdf_extras" default="$(arg urdf_extras)"/>
-    <arg name="robot_namespace" value="$(arg robot_namespace)"/>    
+    <arg name="robot_namespace" value="$(arg robot_namespace)"/>
+    <arg name="marker_enabled" value="$(arg marker_enabled)"/>   
   </include>
 
   <!-- Load controller configuration -->
