@@ -1,3 +1,6 @@
+#!/usr/bin/env python3
+# -*- coding: utf-8 -*-
+
 import rospy
 import cv2
 from sensor_msgs.msg import Image
@@ -58,11 +61,17 @@ class SetInit:
         if self.tracker_type == 'GOTURN':
             self.tracker = cv2.TrackerGOTURN_create()
 
+        '''
+        追踪器工作初始化
+        frame:初始化追踪画面
+        box:追踪的区域
+        '''
         if not self.tracker:
-            raise Exception("dd")
-        status = self.tracker.init(frame, box)
+            raise Exception("追踪器未初始化")
+        status = self.tracker.init(frame,box)
         if not status:
-            raise Exception("vv")
+            raise Exception("追踪器工作初始化失败")
+        
         self.coord = box
         self.isWorking = True
         print("ROI: ", self.coord)
