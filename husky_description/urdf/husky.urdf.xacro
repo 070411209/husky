@@ -49,6 +49,7 @@ ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSI
   <xacro:include filename="$(find husky_description)/urdf/accessories/intel_realsense.urdf.xacro"/>
   <xacro:include filename="$(find husky_description)/urdf/accessories/sick_lms1xx_mount.urdf.xacro"/>
   <xacro:include filename="$(find husky_description)/urdf/accessories/sensor_arch.urdf.xacro"/>
+  <xacro:include filename="$(find husky_description)/urdf/accessories/marker_mount.urdf.xacro"/>
 
   <xacro:property name="M_PI" value="3.14159"/>
 
@@ -160,6 +161,13 @@ ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSI
     <xacro:sensor_arch prefix="" parent="top_plate_link">
       <origin xyz="-0.35 0 0.51" rpy="0 0 -3.14"/>
     </xacro:sensor_arch>
+  </xacro:if>
+
+  <!--Custom-->
+  <xacro:if value="$(arg marker_enabled)">
+    <xacro:marker_mount prefix="" parent="top_plate_link">
+      <origin xyz="-0.35 0 0.25" rpy="0 0 -3.14"/>
+    </xacro:marker_mount>
   </xacro:if>
 
   <!-- add the intel realsense to the topbar if needed -->

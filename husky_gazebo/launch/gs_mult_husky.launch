@@ -29,7 +29,7 @@ ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSI
   <arg name="ur5_enabled" default="false"/>
   <arg name="realsense_enabled" default="true"/>
   <arg name="test_model" default="false"/>
-  <arg name="marker_enabled" default="false"/>
+  <arg name="marker_enabled" default="true"/>
 
   <include file="$(find multimaster_launch)/launch/multimaster_gazebo.launch"/>
 
