@@ -1,6 +1,8 @@
 cmake_minimum_required(VERSION 2.8.3)
 project(example_move_base_client)
 
+set(CMAKE_CXX_STANDARD 11)
+
 find_package(catkin_simple REQUIRED)
 
 #uncomment next line to use OpenCV library
@@ -34,6 +36,10 @@ catkin_simple()
 cs_add_executable(example_move_base_client src/example_move_base_client.cpp src/xform_utils.cpp)
 
 cs_add_executable(example_01 src/example_01.cpp)
+
+cs_add_executable(example_02 src/example_02.cpp)
+
+cs_add_executable(example_03 src/example_03.cpp src/track_test.cpp)
 
 #the following is required, if desire to link a node in this package with a library created in this same package
 # edit the arguments to reference the named node and named library within this package

@@ -57,7 +57,7 @@ int main(int argc, char** argv){
 
   boost::thread spin_thread = boost::thread(boost::bind(&spinThread));
 
-  MoveBaseClient ac("move_base");
+  MoveBaseClient ac("pose_base_controller");
 
   //give some time for connections to register
   sleep(2.0);

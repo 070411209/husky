@@ -20,7 +20,7 @@ void set_des_pose() {
     g_destination_pose.header.frame_id="base_link";
     g_destination_pose.header.stamp = ros::Time::now();
     g_destination_pose.pose.position.z=0;
-    g_destination_pose.pose.position.x = 2;
+    g_destination_pose.pose.position.x = 1;
     g_destination_pose.pose.position.y = 0;
     g_destination_pose.pose.orientation.x= 0; 
     g_destination_pose.pose.orientation.y= 0; 
@@ -74,12 +74,23 @@ int main(int argc, char** argv) {
         ROS_INFO("retrying...");
     }
     ROS_INFO("connected to move_base action server"); // if here, then we connected to the server; 
+
+    move_base_msgs::MoveBaseGoal goal;
+
+    //we'll send a goal to the robot to move 2 meters forward
+    goal.target_pose.header.frame_id = "base_link";
+    goal.target_pose.header.stamp = ros::Time::now();
+
+    goal.target_pose.pose.position.x = -1.0;
+    goal.target_pose.pose.position.y = 0.2;
+    goal.target_pose.pose.orientation = tf::createQuaternionMsgFromYaw(M_PI);
+
     //geometry_msgs/PoseStamped target_pose
     move_base_goal.target_pose = g_destination_pose;         
     
-    ROS_INFO("sending goal: ");
+    ROS_INFO("example sending goal: ");
     xform_utils.printStampedPose(g_destination_pose);
-    navigator_ac.sendGoal(move_base_goal,&navigatorDoneCb); 
+    navigator_ac.sendGoal(goal, &navigatorDoneCb); 
 
         
     bool finished_before_timeout = navigator_ac.waitForResult(ros::Duration(120.0));
