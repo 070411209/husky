@@ -33,6 +33,8 @@ catkin_simple()
 # may add more of these lines for more nodes from the same package
 cs_add_executable(example_move_base_client src/example_move_base_client.cpp src/xform_utils.cpp)
 
+cs_add_executable(example_01 src/example_01.cpp)
+
 #the following is required, if desire to link a node in this package with a library created in this same package
 # edit the arguments to reference the named node and named library within this package
 # target_link_libraries(example my_lib)

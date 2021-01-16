@@ -17,13 +17,15 @@
 geometry_msgs::PoseStamped g_destination_pose;
 
 void set_des_pose() {
-    g_destination_pose.header.frame_id="/map";
+    g_destination_pose.header.frame_id="/base_link";
     g_destination_pose.header.stamp = ros::Time::now();
     g_destination_pose.pose.position.z=0;
-    g_destination_pose.pose.position.x = -8.8;
-    g_destination_pose.pose.position.y = 0.18;
-    g_destination_pose.pose.orientation.z= -0.707; 
-    g_destination_pose.pose.orientation.w= 0.707;
+    g_destination_pose.pose.position.x = 0;
+    g_destination_pose.pose.position.y = 1;
+    g_destination_pose.pose.orientation.x= 0; 
+    g_destination_pose.pose.orientation.y= 0; 
+    g_destination_pose.pose.orientation.z= 0; 
+    g_destination_pose.pose.orientation.w= 1;
 }
 
 void navigatorDoneCb(const actionlib::SimpleClientGoalState& state,
@@ -47,8 +49,8 @@ int main(int argc, char** argv) {
         tferr=false;
         try {
                 //try to lookup transform, link2-frame w/rt base_link frame; this will test if
-            // a valid transform chain has been published from base_frame to link2
-                tfListener.lookupTransform("map","base_link", ros::Time(0), tfBaseLinkWrtMap);
+                // a valid transform chain has been published from base_frame to link2
+                tfListener.lookupTransform("odom","base_link", ros::Time(0), tfBaseLinkWrtMap);
             } catch(tf::TransformException &exception) {
                 ROS_WARN("%s; retrying...", exception.what());
                 tferr=true;
@@ -81,11 +83,11 @@ int main(int argc, char** argv) {
 
         
     bool finished_before_timeout = navigator_ac.waitForResult(ros::Duration(120.0));
-        //bool finished_before_timeout = action_client.waitForResult(); // wait forever...
-        if (!finished_before_timeout) {
-            ROS_WARN("giving up waiting on result ");
-            return 1;
-        }
+    //bool finished_before_timeout = action_client.waitForResult(); // wait forever...
+    if (!finished_before_timeout) {
+        ROS_WARN("giving up waiting on result ");
+        return 1;
+    }
         
     return 0;
 }

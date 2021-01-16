@@ -1,0 +1,5 @@
+<?xml version="1.0"?>
+<launch>
+  <node name="example_navigator_action_client" pkg="example_move_base_client" type="example_move_base_client" output="screen"/>
+  <node pkg="tf" type="static_transform_publisher" name="odom_map_broadcaster" args="0 0 0 0 0 0 /map /odom 100" />
+</launch>

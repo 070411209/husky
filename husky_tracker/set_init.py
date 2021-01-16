@@ -61,8 +61,8 @@ class SetInit:
 if __name__=='__main__':
     rospy.init_node('camera_display', anonymous=True)
     
-    init_rect_img_topic = car_config.init_rect_img_topic
+    init_rect_img_topic = "/realsense/color/image_raw"   # car_config.init_rect_img_topic
 
     SetInit(init_rect_img_topic)
 
-    print("test")
+    print("Test...")
