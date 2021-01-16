@@ -17,11 +17,11 @@
 geometry_msgs::PoseStamped g_destination_pose;
 
 void set_des_pose() {
-    g_destination_pose.header.frame_id="/base_link";
+    g_destination_pose.header.frame_id="base_link";
     g_destination_pose.header.stamp = ros::Time::now();
     g_destination_pose.pose.position.z=0;
-    g_destination_pose.pose.position.x = 0;
-    g_destination_pose.pose.position.y = 1;
+    g_destination_pose.pose.position.x = 2;
+    g_destination_pose.pose.position.y = 0;
     g_destination_pose.pose.orientation.x= 0; 
     g_destination_pose.pose.orientation.y= 0; 
     g_destination_pose.pose.orientation.z= 0; 
